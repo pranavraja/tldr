@@ -8,7 +8,7 @@ If you have Go installed, grab the latest version:
 
     go get github.com/pranavraja/tldr
 
-Binary releases for common platforms will be added soon, once I add a few more features.
+Binary releases for common platforms are available under [Releases](https://github.com/pranavraja/tldr/releases/latest). These work without Go installed.
 
 # Prerequisites
 
