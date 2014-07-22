@@ -13,7 +13,7 @@ func main() {
 	goopt.Description = func() string {
 		return "Tldr - simplified and community-driven man pages."
 	}
-	goopt.Version = "0.1"
+	goopt.Version = "0.2"
 	goopt.Summary = "simplified and community-driven man pages"
 	goopt.Parse(nil)
 
