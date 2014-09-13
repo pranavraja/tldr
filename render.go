@@ -1,8 +1,6 @@
 package main
 
 import (
-	"bufio"
-	"io"
 	"strings"
 )
 
@@ -25,24 +23,23 @@ const (
 // Render pretties up some markdown for terminal display.
 // Only a small subset of markdown is actually supported,
 // as described in https://github.com/rprieto/tldr/blob/master/CONTRIBUTING.md#markdown-format
-func Render(markdown io.Reader) (rendered string) {
-	scanner := bufio.NewScanner(markdown)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if strings.HasPrefix(line, "#") {
+func Render(markdown string) (rendered string) {
+	lines := strings.Split(markdown, "\n")
+	for i := range lines {
+		if strings.HasPrefix(lines[i], "#") {
 			// Heading
-			rendered += OnBlue + Bold + Cyan + strings.TrimLeft(line, "# ") + Reset + "\n"
-		} else if strings.HasPrefix(line, ">") {
+			rendered += OnBlue + Bold + Cyan + strings.TrimLeft(lines[i], "# ") + Reset + "\n"
+		} else if strings.HasPrefix(lines[i], ">") {
 			// Quotation
-			rendered += "  " + White + strings.TrimLeft(line, "> ") + Reset + "\n"
-		} else if strings.HasPrefix(line, "-") {
+			rendered += "  " + White + strings.TrimLeft(lines[i], "> ") + Reset + "\n"
+		} else if strings.HasPrefix(lines[i], "-") {
 			// Inline list
-			rendered += Green + line + Reset + "\n"
-		} else if strings.HasPrefix(line, "`") {
+			rendered += Green + lines[i] + Reset + "\n"
+		} else if strings.HasPrefix(lines[i], "`") {
 			// Code
-			rendered += "  " + OnGrey + White + strings.Trim(line, "`") + Reset + "\n"
+			rendered += "  " + OnGrey + White + strings.Trim(lines[i], "`") + Reset + "\n"
 		} else {
-			rendered += line + "\n"
+			rendered += lines[i] + "\n"
 		}
 	}
 	return rendered

@@ -7,6 +7,7 @@ import (
 )
 
 var param_platform = goopt.String([]string{"-p", "--platform"}, "common", "specify a platform")
+var CfgParams, _ = LoadConfig()
 
 func main() {
 
@@ -17,8 +18,11 @@ func main() {
 	goopt.Summary = "simplified and community-driven man pages"
 	goopt.Parse(nil)
 
+//	  CfgParams, _ := LoadConfig()
+
 	if len(os.Args) <= 1 {
 		fmt.Printf(goopt.Usage())
+		fmt.Printf(CfgParams.CacheDirectory + "\n")
 		os.Exit(1)
 	}
 
