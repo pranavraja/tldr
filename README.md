@@ -1,4 +1,4 @@
-[![Build Status](https://drone.io/github.com/pranavraja/tldr/status.png)](https://drone.io/github.com/pranavraja/tldr/latest)
+[![Build Status](https://drone.io/github.com/Like-all/tldr-client/status.png)](https://drone.io/github.com/Like-all/tldr-client/latest)
 
 A work-in-progress [Go](http://golang.org/) client for [tldr](https://github.com/rprieto/tldr/).
 
