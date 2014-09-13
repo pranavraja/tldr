@@ -27,6 +27,6 @@ Once you have cloned the repo, build using `go build`, run the tests using `go t
 # TODO (contributions welcome)
 
 - Improve rendering of command placeholders, like in `sed 's/a/b/' {{filename}}`
-- Caching of commands
+- ~~Caching of commands~~
 - ~~Add a command-line flag to override the platform (currently only "common" is supported)~~
 - Improve multi-line command rendering
