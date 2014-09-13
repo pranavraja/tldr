@@ -1,4 +1,4 @@
-[![Build Status](https://drone.io/github.com/pranavraja/tldr/status.png)](https://drone.io/github.com/pranavraja/tldr/latest)
+[![Build Status](https://drone.io/github.com/Like-all/tldr-client/status.png)](https://drone.io/github.com/Like-all/tldr-client/latest)
 
 A work-in-progress [Go](http://golang.org/) client for [tldr](https://github.com/rprieto/tldr/).
 
@@ -27,6 +27,6 @@ Once you have cloned the repo, build using `go build`, run the tests using `go t
 # TODO (contributions welcome)
 
 - Improve rendering of command placeholders, like in `sed 's/a/b/' {{filename}}`
-- Caching of commands
-- Add a command-line flag to override the platform (currently only "common" is supported)
+- ~~Caching of commands~~
+- ~~Add a command-line flag to override the platform (currently only "common" is supported)~~
 - Improve multi-line command rendering
