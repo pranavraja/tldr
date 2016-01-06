@@ -10,6 +10,8 @@ import (
 	"github.com/pranavraja/tldr/lib/tldr"
 )
 
+var fetcher tldr.PageFetcher
+
 type testServer struct {
 	originalRequest *http.Request
 	statusCode      int
@@ -25,7 +27,7 @@ func (t *testServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (t *testServer) Intercept(test func()) {
 	server := httptest.NewServer(t)
 	defer server.Close()
-	remote = server.URL
+	fetcher = tldr.NewRemotePageFetcher(server.URL)
 	test()
 }
 
@@ -34,7 +36,7 @@ func TestGetPageForPlatform_404(t *testing.T) {
 	var resp io.ReadCloser
 	var err error
 	server.Intercept(func() {
-		resp, err = tldr.GetPageForPlatform("tldr", "osx")
+		resp, err = fetcher.Fetch("tldr", "osx")
 	})
 	if resp != nil {
 		t.Errorf("Expected a nil response but got a non-nil response")
@@ -49,7 +51,7 @@ func TestGetPageForPlatform(t *testing.T) {
 	var resp io.ReadCloser
 	var err error
 	server.Intercept(func() {
-		resp, err = tldr.GetPageForPlatform("tldr", "osx")
+		resp, err = fetcher.Fetch("tldr", "osx")
 	})
 	defer resp.Close()
 	if err != nil {
