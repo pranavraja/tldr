@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-var remote string = "http://raw.github.com/rprieto/tldr/master/pages"
+var remote string = "https://raw.github.com/rprieto/tldr/master/pages"
 
 // Caller must close the response body after reading.
 func GetPageForPlatform(page, platform string) (io.ReadCloser, error) {
