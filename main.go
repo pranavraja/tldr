@@ -12,19 +12,24 @@ import (
 var remote string = "https://raw.github.com/tldr-pages/tldr/master/pages"
 
 func main() {
-	if len(os.Args) <= 1 {
-		println("Usage: tldr <command>")
-		os.Exit(1)
-	}
-
-	usr, err := user.Current()
+	err := run()
 	if err != nil {
 		println(err.Error())
 		os.Exit(1)
 	}
+}
+
+func run() error {
+	if len(os.Args) <= 1 {
+		return errors.New("Usage: tldr <command>")
+	}
+
+	usr, err := user.Current()
+	if err != nil {
+		return err
+	}
 	if usr.HomeDir == "" {
-		println(errors.New("Can't load user's home folder path"))
-		os.Exit(1)
+		return errors.New("Can't load user's home folder path")
 	}
 
 	var fetcher tldr.PageFetcher
@@ -35,9 +40,9 @@ func main() {
 	platform := "common"
 	page, err := fetcher.Fetch(cmd, platform)
 	if err != nil {
-		println(err.Error())
-		os.Exit(1)
+		return err
 	}
 	defer page.Close()
 	println(tldr.Render(page.Reader()))
+	return nil
 }
