@@ -26,7 +26,7 @@ func (f *Repository) Page(page, platform string) (entity.Page, error) {
 	}
 	if resp.StatusCode == 404 {
 		resp.Body.Close()
-		return nil, fmt.Errorf("Not found.\nTo add this command, send Romain a pull request at:\n  https://github.com/rprieto/tldr")
+		return nil, fmt.Errorf("Not found.\nTo add this command, send Romain a pull request at:\n  https://github.com/tldr-pages/tldr")
 	}
 	if resp.StatusCode != 200 {
 		resp.Body.Close()

@@ -23,7 +23,7 @@ func (r *IndexCheckerRepository) Page(name, platform string) (entity.Page, error
 	}
 	platforms := index.PlatformsFor(name)
 	if platforms == nil || len(platforms) == 0 {
-		return nil, errors.New("Can't find any platform for command " + name)
+		return nil, errors.New("Not found.\nTo add this command, send a pull request at:\n  https://github.com/tldr-pages/tldr")
 	}
 
 	// Ignore requested platform and use the first platform from index
