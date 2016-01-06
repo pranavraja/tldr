@@ -4,13 +4,15 @@ import (
 	"errors"
 	"os"
 	"os/user"
-	"runtime"
 	"time"
 
 	"github.com/pranavraja/tldr/lib/tldr"
+	"github.com/pranavraja/tldr/lib/tldr/cache"
+	"github.com/pranavraja/tldr/lib/tldr/entity"
+	"github.com/pranavraja/tldr/lib/tldr/remote"
 )
 
-var remote string = "https://raw.github.com/tldr-pages/tldr/master/pages"
+var remoteAddress string = "https://raw.github.com/tldr-pages/tldr/master/pages"
 
 func main() {
 	err := run()
@@ -33,27 +35,18 @@ func run() error {
 		return errors.New("Can't load user's home folder path")
 	}
 
-	var fetcher tldr.PageFetcher
-	fetcher = tldr.NewRemotePageFetcher(remote)
-	fetcher = tldr.NewFileSystemCache(fetcher, "/Users/txgruppi/.tldr", time.Hour*24)
+	var repository entity.Repository
+	repository = remote.NewRemoteRepository(remoteAddress)
+	repository = cache.NewFileSystemCacheRepository(repository, "/Users/txgruppi/.tldr", time.Hour*24)
+	repository = tldr.NewIndexCheckerRepository(repository)
 
 	cmd := os.Args[1]
 
-	platform := runtime.GOOS
-	switch platform {
-	case "darwin":
-		platform = "osx"
+	page, err := repository.Page(cmd, "common")
+	if err != nil {
+		return err
 	}
-
-	var page tldr.Page
-	for _, platform := range []string{platform, "common"} {
-		page, err = fetcher.Fetch(cmd, platform)
-		if err != nil {
-			continue
-		}
-		defer page.Close()
-		println(tldr.Render(page.Reader()))
-		return nil
-	}
-	return err
+	defer page.Close()
+	println(tldr.Render(page.Reader()))
+	return nil
 }

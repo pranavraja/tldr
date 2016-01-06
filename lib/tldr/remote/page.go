@@ -1,8 +1,12 @@
-package tldr
+package remote
 
-import "io"
+import (
+	"io"
 
-func NewRemotePage(readCloser io.ReadCloser) Page {
+	"github.com/pranavraja/tldr/lib/tldr/entity"
+)
+
+func NewRemotePage(readCloser io.ReadCloser) entity.Page {
 	return &RemotePage{
 		readCloser: readCloser,
 	}

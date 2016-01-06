@@ -1,4 +1,4 @@
-package tldr
+package entity
 
 import "io"
 

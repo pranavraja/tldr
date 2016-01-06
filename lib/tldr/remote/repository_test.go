@@ -1,4 +1,4 @@
-package tldr_test
+package remote_test
 
 import (
 	"io"
@@ -7,10 +7,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/pranavraja/tldr/lib/tldr"
+	"github.com/pranavraja/tldr/lib/tldr/entity"
+	"github.com/pranavraja/tldr/lib/tldr/remote"
 )
 
-var fetcher tldr.PageFetcher
+var repository entity.Repository
 
 type testServer struct {
 	originalRequest *http.Request
@@ -27,16 +28,16 @@ func (t *testServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (t *testServer) Intercept(test func()) {
 	server := httptest.NewServer(t)
 	defer server.Close()
-	fetcher = tldr.NewRemotePageFetcher(server.URL)
+	repository = remote.NewRemoteRepository(server.URL)
 	test()
 }
 
 func TestGetPageForPlatform_404(t *testing.T) {
 	server := testServer{statusCode: 404, response: "NOT FOUND BRO"}
-	var resp tldr.Page
+	var resp entity.Page
 	var err error
 	server.Intercept(func() {
-		resp, err = fetcher.Fetch("tldr", "osx")
+		resp, err = repository.Page("tldr", "osx")
 	})
 	if resp != nil {
 		t.Errorf("Expected a nil response but got a non-nil response")
@@ -48,10 +49,10 @@ func TestGetPageForPlatform_404(t *testing.T) {
 
 func TestGetPageForPlatform(t *testing.T) {
 	server := testServer{statusCode: 200, response: "DO IT BRO"}
-	var resp tldr.Page
+	var resp entity.Page
 	var err error
 	server.Intercept(func() {
-		resp, err = fetcher.Fetch("tldr", "osx")
+		resp, err = repository.Page("tldr", "osx")
 	})
 	defer resp.Close()
 	if err != nil {

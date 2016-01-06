@@ -1,11 +1,13 @@
-package tldr
+package cache
 
 import (
 	"bytes"
 	"io"
+
+	"github.com/pranavraja/tldr/lib/tldr/entity"
 )
 
-func NewCachedPage(contents []byte) Page {
+func NewCachedPage(contents []byte) entity.Page {
 	return &CachedPage{
 		contents: contents,
 	}
