@@ -33,7 +33,7 @@ func (t *testServer) Intercept(test func()) {
 
 func TestGetPageForPlatform_404(t *testing.T) {
 	server := testServer{statusCode: 404, response: "NOT FOUND BRO"}
-	var resp io.ReadCloser
+	var resp tldr.Page
 	var err error
 	server.Intercept(func() {
 		resp, err = fetcher.Fetch("tldr", "osx")
@@ -48,7 +48,7 @@ func TestGetPageForPlatform_404(t *testing.T) {
 
 func TestGetPageForPlatform(t *testing.T) {
 	server := testServer{statusCode: 200, response: "DO IT BRO"}
-	var resp io.ReadCloser
+	var resp tldr.Page
 	var err error
 	server.Intercept(func() {
 		resp, err = fetcher.Fetch("tldr", "osx")
@@ -60,7 +60,7 @@ func TestGetPageForPlatform(t *testing.T) {
 	if expected := "/osx/tldr.md"; server.originalRequest.URL.Path != expected {
 		t.Errorf("Page requested from wrong url: %s", server.originalRequest.URL.Path)
 	}
-	if body, _ := ioutil.ReadAll(resp); string(body) != "DO IT BRO" {
+	if body, _ := ioutil.ReadAll(resp.Reader()); string(body) != "DO IT BRO" {
 		t.Errorf("Read wrong body: %s")
 	}
 }
