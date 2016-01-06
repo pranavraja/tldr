@@ -2,8 +2,10 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"os/user"
+	"runtime"
 	"time"
 
 	"github.com/pranavraja/tldr/lib/tldr"
@@ -17,7 +19,7 @@ var remoteAddress string = "https://raw.github.com/tldr-pages/tldr/master/pages"
 func main() {
 	err := run()
 	if err != nil {
-		println(err.Error())
+		fmt.Println(err.Error())
 		os.Exit(1)
 	}
 }
@@ -41,12 +43,21 @@ func run() error {
 	repository = tldr.NewIndexCheckerRepository(repository)
 
 	cmd := os.Args[1]
-
-	page, err := repository.Page(cmd, "common")
-	if err != nil {
-		return err
+	platform := runtime.GOOS
+	switch platform {
+	case "darwin":
+		platform = "osx"
 	}
-	defer page.Close()
-	println(tldr.Render(page.Reader()))
-	return nil
+
+	var page entity.Page
+	for _, platform := range []string{platform, "common"} {
+		page, err = repository.Page(cmd, platform)
+		if err != nil {
+			continue
+		}
+		defer page.Close()
+		fmt.Println(tldr.Render(page.Reader()))
+		return nil
+	}
+	return err
 }

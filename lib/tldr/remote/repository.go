@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/pranavraja/tldr/lib/tldr"
 	"github.com/pranavraja/tldr/lib/tldr/entity"
 )
 
@@ -26,7 +27,7 @@ func (f *Repository) Page(page, platform string) (entity.Page, error) {
 	}
 	if resp.StatusCode == 404 {
 		resp.Body.Close()
-		return nil, fmt.Errorf("Not found.\nTo add this command, send Romain a pull request at:\n  https://github.com/tldr-pages/tldr")
+		return nil, tldr.ErrNotFound
 	}
 	if resp.StatusCode != 200 {
 		resp.Body.Close()
