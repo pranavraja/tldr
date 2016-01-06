@@ -1,8 +1,10 @@
-package main
+package tldr_test
 
 import (
 	"strings"
 	"testing"
+
+	"github.com/pranavraja/tldr/lib/tldr"
 )
 
 func TestRender(t *testing.T) {
@@ -19,7 +21,7 @@ func TestRender(t *testing.T) {
 		{"code", "Title\n`go build`\n`go test`", "Title\n  \033[40m\033[37mgo build\033[0m\n  \033[40m\033[37mgo test\033[0m\n"},
 	}
 	for _, test := range tests {
-		rendered := Render(strings.NewReader(test.input))
+		rendered := tldr.Render(strings.NewReader(test.input))
 		if rendered != test.expected {
 			t.Errorf("Incorrect render of %s: got '%s', want '%s'", test.name, rendered, test.expected)
 		}

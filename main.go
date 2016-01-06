@@ -2,6 +2,8 @@ package main
 
 import (
 	"os"
+
+	"github.com/pranavraja/tldr/lib/tldr"
 )
 
 func main() {
@@ -11,10 +13,10 @@ func main() {
 	}
 	cmd := os.Args[1]
 	platform := "common"
-	page, err := GetPageForPlatform(cmd, platform)
+	page, err := tldr.GetPageForPlatform(cmd, platform)
 	if err != nil {
 		println(err.Error())
 		os.Exit(1)
 	}
-	println(Render(page))
+	println(tldr.Render(page))
 }

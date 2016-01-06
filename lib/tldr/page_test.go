@@ -1,4 +1,4 @@
-package main
+package tldr_test
 
 import (
 	"io"
@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/pranavraja/tldr/lib/tldr"
 )
 
 type testServer struct {
@@ -32,7 +34,7 @@ func TestGetPageForPlatform_404(t *testing.T) {
 	var resp io.ReadCloser
 	var err error
 	server.Intercept(func() {
-		resp, err = GetPageForPlatform("tldr", "osx")
+		resp, err = tldr.GetPageForPlatform("tldr", "osx")
 	})
 	if resp != nil {
 		t.Errorf("Expected a nil response but got a non-nil response")
@@ -47,7 +49,7 @@ func TestGetPageForPlatform(t *testing.T) {
 	var resp io.ReadCloser
 	var err error
 	server.Intercept(func() {
-		resp, err = GetPageForPlatform("tldr", "osx")
+		resp, err = tldr.GetPageForPlatform("tldr", "osx")
 	})
 	defer resp.Close()
 	if err != nil {
