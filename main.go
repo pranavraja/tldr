@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"os/user"
+	"runtime"
 	"time"
 
 	"github.com/pranavraja/tldr/lib/tldr"
@@ -37,12 +38,22 @@ func run() error {
 	fetcher = tldr.NewFileSystemCache(fetcher, "/Users/txgruppi/.tldr", time.Hour*24)
 
 	cmd := os.Args[1]
-	platform := "common"
-	page, err := fetcher.Fetch(cmd, platform)
-	if err != nil {
-		return err
+
+	platform := runtime.GOOS
+	switch platform {
+	case "darwin":
+		platform = "osx"
 	}
-	defer page.Close()
-	println(tldr.Render(page.Reader()))
-	return nil
+
+	var page tldr.Page
+	for _, platform := range []string{platform, "common"} {
+		page, err = fetcher.Fetch(cmd, platform)
+		if err != nil {
+			continue
+		}
+		defer page.Close()
+		println(tldr.Render(page.Reader()))
+		return nil
+	}
+	return err
 }
