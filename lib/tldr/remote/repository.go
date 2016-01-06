@@ -8,7 +8,7 @@ import (
 	"github.com/pranavraja/tldr/lib/tldr/entity"
 )
 
-func NewRemoteRepository(remote string) entity.Repository {
+func NewRemoteRepository(remote string) *Repository {
 	return &Repository{
 		remote: remote,
 	}

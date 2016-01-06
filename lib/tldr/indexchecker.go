@@ -6,7 +6,7 @@ import (
 	"github.com/pranavraja/tldr/lib/tldr/entity"
 )
 
-func NewIndexCheckerRepository(repository entity.Repository) entity.Repository {
+func NewIndexCheckerRepository(repository entity.Repository) *IndexCheckerRepository {
 	return &IndexCheckerRepository{
 		Repository: repository,
 	}

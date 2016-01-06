@@ -13,7 +13,7 @@ import (
 
 var ErrTooOld = errors.New("Cached file is too old")
 
-func NewFileSystemCacheRepository(repository entity.Repository, path string, ttl time.Duration) entity.Repository {
+func NewFileSystemCacheRepository(repository entity.Repository, path string, ttl time.Duration) *FileSystemCacheRepository {
 	return &FileSystemCacheRepository{
 		Repository: repository,
 		path:       path,
