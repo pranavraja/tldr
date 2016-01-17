@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/user"
+	"path"
 	"runtime"
 	"time"
 
@@ -39,7 +40,7 @@ func run() error {
 
 	var repository entity.Repository
 	repository = remote.NewRemoteRepository(remoteAddress)
-	repository = cache.NewFileSystemCacheRepository(repository, "/Users/txgruppi/.tldr", time.Hour*24)
+	repository = cache.NewFileSystemCacheRepository(repository, path.Join(usr.HomeDir, ".tldr"), time.Hour*24)
 	repository = tldr.NewIndexCheckerRepository(repository)
 
 	cmd := os.Args[1]
