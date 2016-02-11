@@ -1,4 +1,4 @@
-package main
+package remote_test
 
 import (
 	"io"
@@ -6,7 +6,12 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/pranavraja/tldr/lib/tldr/entity"
+	"github.com/pranavraja/tldr/lib/tldr/remote"
 )
+
+var repository entity.Repository
 
 type testServer struct {
 	originalRequest *http.Request
@@ -23,16 +28,16 @@ func (t *testServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (t *testServer) Intercept(test func()) {
 	server := httptest.NewServer(t)
 	defer server.Close()
-	remote = server.URL
+	repository = remote.NewRemoteRepository(server.URL)
 	test()
 }
 
 func TestGetPageForPlatform_404(t *testing.T) {
 	server := testServer{statusCode: 404, response: "NOT FOUND BRO"}
-	var resp io.ReadCloser
+	var resp entity.Page
 	var err error
 	server.Intercept(func() {
-		resp, err = GetPageForPlatform("tldr", "osx")
+		resp, err = repository.Page("tldr", "osx")
 	})
 	if resp != nil {
 		t.Errorf("Expected a nil response but got a non-nil response")
@@ -44,10 +49,10 @@ func TestGetPageForPlatform_404(t *testing.T) {
 
 func TestGetPageForPlatform(t *testing.T) {
 	server := testServer{statusCode: 200, response: "DO IT BRO"}
-	var resp io.ReadCloser
+	var resp entity.Page
 	var err error
 	server.Intercept(func() {
-		resp, err = GetPageForPlatform("tldr", "osx")
+		resp, err = repository.Page("tldr", "osx")
 	})
 	defer resp.Close()
 	if err != nil {
@@ -56,7 +61,7 @@ func TestGetPageForPlatform(t *testing.T) {
 	if expected := "/osx/tldr.md"; server.originalRequest.URL.Path != expected {
 		t.Errorf("Page requested from wrong url: %s", server.originalRequest.URL.Path)
 	}
-	if body, _ := ioutil.ReadAll(resp); string(body) != "DO IT BRO" {
+	if body, _ := ioutil.ReadAll(resp.Reader()); string(body) != "DO IT BRO" {
 		t.Errorf("Read wrong body: %s")
 	}
 }
