@@ -1,6 +1,6 @@
 [![Build Status](https://drone.io/github.com/pranavraja/tldr/status.png)](https://drone.io/github.com/pranavraja/tldr/latest)
 
-A work-in-progress [Go](http://golang.org/) client for [tldr](https://github.com/rprieto/tldr/).
+A work-in-progress [Go](http://golang.org/) client for [tldr](https://github.com/tldr-pages/tldr/).
 
 # Setup
 
