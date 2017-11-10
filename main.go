@@ -56,8 +56,8 @@ func run() error {
 		if err != nil {
 			continue
 		}
-		defer page.Close()
 		fmt.Println(tldr.Render(page.Reader()))
+		page.Close()
 		return nil
 	}
 	return err
