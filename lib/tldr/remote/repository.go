@@ -9,6 +9,8 @@ import (
 	"github.com/pranavraja/tldr/lib/tldr/entity"
 )
 
+const indexURL = "http://tldr.sh/assets/index.json"
+
 func NewRemoteRepository(remote string) *Repository {
 	return &Repository{
 		remote: remote,
@@ -23,6 +25,7 @@ type Repository struct {
 func (f *Repository) Page(page, platform string) (entity.Page, error) {
 	resp, err := http.Get(f.remote + "/" + platform + "/" + page + ".md")
 	if err != nil {
+		panic(err)
 		return nil, err
 	}
 	if resp.StatusCode == 404 {
@@ -37,7 +40,7 @@ func (f *Repository) Page(page, platform string) (entity.Page, error) {
 }
 
 func (f *Repository) Index() (entity.Index, error) {
-	resp, err := http.Get(f.remote + "/index.json")
+	resp, err := http.Get(indexURL)
 	if err != nil {
 		return nil, err
 	}
