@@ -37,7 +37,7 @@ func (f *Repository) Page(page, platform string) (entity.Page, error) {
 }
 
 func (f *Repository) Index() (entity.Index, error) {
-	resp, err := http.Get(f.remote + "/index.json")
+	resp, err := http.Get("https://tldr-pages.github.io/assets/index.json")
 	if err != nil {
 		return nil, err
 	}
